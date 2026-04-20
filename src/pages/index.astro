@@ -1,26 +1,49 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
 import Layout from "../layouts/Layout.astro";
+
+const FALLBACK_HERO =
+  "https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_Portal_Girls.webp";
+const localHeroPath = path.resolve("public/hero.jpg");
+const heroSrc = fs.existsSync(localHeroPath) ? "/hero.jpg" : FALLBACK_HERO;
 ---
 
 <Layout>
-  <main class="relative min-h-screen">
+  <main class="relative min-h-dvh">
     <!-- Hero / signup -->
-    <section class="relative overflow-hidden">
-      <!-- Background image: reuse Partnership Schools collateral -->
+    <section class="relative isolate min-h-dvh overflow-hidden">
+      <!-- Background image: drop a file at public/hero.jpg to replace -->
       <div class="absolute inset-0 -z-10">
         <img
-          src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_Portal_Girls.webp"
+          src={heroSrc}
           alt=""
           class="h-full w-full object-cover object-center"
           loading="eager"
           fetchpriority="high"
         />
-        <div class="absolute inset-0 bg-gradient-to-b from-brand/85 via-brand/75 to-brand/95"></div>
+        <!-- Darkening overlay: keeps the form card and hero text legible on any photo -->
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-brand/50 via-brand/30 to-brand/70"></div>
       </div>
 
-      <div class="mx-auto flex min-h-screen max-w-2xl flex-col justify-between px-6 py-10 sm:px-8 sm:py-14">
-        <!-- Logo -->
-        <header class="flex items-center">
+      <div class="mx-auto flex min-h-dvh w-full max-w-xl flex-col px-5 py-8 sm:max-w-2xl sm:px-8 sm:py-12">
+        <!-- Tagline -->
+        <div class="text-center">
+          <p class="font-display text-xs uppercase tracking-[0.25em] text-white/85 sm:text-sm">
+            Coming to Toledo
+          </p>
+          <h1 class="mt-3 font-display text-3xl leading-[1.05] text-white text-balance sm:text-5xl md:text-6xl">
+            Stronger schools.<br class="hidden sm:block" />
+            <span class="sm:text-white/90">Stronger community.</span>
+          </h1>
+          <p class="mx-auto mt-4 max-w-lg font-serif text-base text-white/90 text-balance sm:mt-6 sm:text-xl">
+            For more than thirty years, Partnership Schools has helped urban Catholic schools deliver an excellent, character-shaping education. Now we're planning something new for Toledo.
+          </p>
+        </div>
+
+        <!-- Logo above the form card -->
+        <div class="mt-8 flex justify-center sm:mt-12">
           <img
             src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_logo_white.svg"
             alt="Partnership Schools"
@@ -28,100 +51,87 @@ import Layout from "../layouts/Layout.astro";
             width="200"
             height="48"
           />
-        </header>
-
-        <!-- Content card -->
-        <div class="my-10 sm:my-14">
-          <p class="font-display text-sm uppercase tracking-[0.25em] text-white/80">
-            Coming to Toledo
-          </p>
-          <h1 class="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl md:text-6xl">
-            Stronger schools.<br />
-            <span class="text-white/90">Stronger community.</span>
-          </h1>
-          <p class="mt-6 max-w-xl font-serif text-lg text-white/90 sm:text-xl">
-            For more than thirty years, Partnership Schools has helped urban Catholic schools deliver an excellent, character-shaping education. Now we're planning something new for Toledo.
-          </p>
-
-          <!-- Form card -->
-          <div class="mt-10 rounded-2xl bg-white p-6 shadow-2xl shadow-black/20 ring-1 ring-black/5 sm:p-8">
-            <h2 class="font-display text-2xl text-brand sm:text-3xl">
-              Sign up to learn more about Partnership Schools
-            </h2>
-            <p class="mt-2 font-serif text-ink-soft">
-              We'll send you updates on our plans for Toledo.
-            </p>
-
-            <form
-              id="signup-form"
-              method="POST"
-              action="/api/signup"
-              class="mt-6 space-y-5"
-              novalidate
-            >
-              <!-- Honeypot -->
-              <div class="hidden" aria-hidden="true">
-                <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
-              </div>
-
-              <div>
-                <label for="name" class="block font-display text-sm font-medium text-ink">
-                  Full name <span class="text-brand">*</span>
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  autocomplete="name"
-                  class="mt-1.5 block w-full rounded-lg border border-black/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder-black/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
-                  placeholder="Jane Doe"
-                />
-              </div>
-
-              <div>
-                <label for="email" class="block font-display text-sm font-medium text-ink">
-                  Email <span class="text-brand">*</span>
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  autocomplete="email"
-                  class="mt-1.5 block w-full rounded-lg border border-black/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder-black/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
-                  placeholder="jane@example.com"
-                />
-              </div>
-
-              <div>
-                <label for="organization" class="block font-display text-sm font-medium text-ink">
-                  Company / organization <span class="font-sans text-xs font-normal text-ink-soft">(optional)</span>
-                </label>
-                <input
-                  id="organization"
-                  name="organization"
-                  type="text"
-                  autocomplete="organization"
-                  class="mt-1.5 block w-full rounded-lg border border-black/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder-black/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
-                  placeholder="Acme Co."
-                />
-              </div>
-
-              <button
-                type="submit"
-                id="submit-btn"
-                class="group relative w-full overflow-hidden rounded-full bg-brand px-8 py-4 text-center font-display text-base font-semibold uppercase tracking-wide text-white transition hover:bg-brand-dark focus:outline-none focus:ring-4 focus:ring-brand/30 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                <span id="submit-label">Sign up to learn more</span>
-              </button>
-
-              <p id="form-error" class="hidden font-sans text-sm text-brand"></p>
-            </form>
-          </div>
         </div>
 
-        <footer class="mt-auto pt-6 font-sans text-xs text-white/70">
+        <!-- Form card -->
+        <div class="mt-5 rounded-2xl bg-white p-5 shadow-2xl shadow-black/30 ring-1 ring-black/5 sm:mt-6 sm:p-8">
+          <h2 class="font-display text-[1.125rem] leading-[1.2] text-brand text-balance sm:text-[1.375rem] md:text-[1.5rem]">
+            Sign up to learn more about Partnership&nbsp;Schools
+          </h2>
+          <p class="mt-2 font-serif text-sm text-ink-soft sm:text-base">
+            We'll send you updates on our plans for Toledo.
+          </p>
+
+          <form
+            id="signup-form"
+            method="POST"
+            action="/api/signup"
+            class="mt-5 space-y-4 sm:mt-6 sm:space-y-5"
+            novalidate
+          >
+            <!-- Honeypot -->
+            <div class="hidden" aria-hidden="true">
+              <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+            </div>
+
+            <div>
+              <label for="name" class="block font-display text-sm font-medium text-ink">
+                Full name <span class="text-brand">*</span>
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                autocomplete="name"
+                class="mt-1.5 block w-full rounded-lg border border-black/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder-black/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
+                placeholder="Jane Doe"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block font-display text-sm font-medium text-ink">
+                Email <span class="text-brand">*</span>
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                inputmode="email"
+                autocomplete="email"
+                class="mt-1.5 block w-full rounded-lg border border-black/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder-black/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
+                placeholder="jane@example.com"
+              />
+            </div>
+
+            <div>
+              <label for="organization" class="block font-display text-sm font-medium text-ink">
+                Company / organization <span class="font-sans text-xs font-normal text-ink-soft">(optional)</span>
+              </label>
+              <input
+                id="organization"
+                name="organization"
+                type="text"
+                autocomplete="organization"
+                class="mt-1.5 block w-full rounded-lg border border-black/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder-black/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
+                placeholder="Acme Co."
+              />
+            </div>
+
+            <button
+              type="submit"
+              id="submit-btn"
+              class="group relative w-full overflow-hidden rounded-full bg-brand px-6 py-4 text-center font-display text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-brand-dark focus:outline-none focus:ring-4 focus:ring-brand/30 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+            >
+              <span id="submit-label">Sign up to learn more</span>
+            </button>
+
+            <p id="form-error" class="hidden font-sans text-sm text-brand" role="alert"></p>
+          </form>
+        </div>
+
+        <footer class="mt-8 pb-2 text-center font-sans text-xs text-white/80 sm:mt-10">
           &copy; {new Date().getFullYear()} Partnership Schools &middot; CCMT Spring Gala
         </footer>
       </div>
