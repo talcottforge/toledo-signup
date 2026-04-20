@@ -12,8 +12,8 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
 
 <Layout>
   <main class="relative min-h-dvh bg-brand">
-    <!-- Top brand band with the Partnership Schools logo -->
-    <header class="flex justify-center bg-brand px-5 pt-6 pb-4 sm:pt-8 sm:pb-6">
+    <!-- Top brand band with the Partnership Schools logo (symmetric padding) -->
+    <header class="flex justify-center bg-brand px-5 py-8 sm:py-10">
       <img
         src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_logo_white.svg"
         alt="Partnership Schools"
@@ -23,21 +23,46 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
       />
     </header>
 
-    <!-- Hero + form section: image fills width at natural aspect so "Always,
-         we begin again." is always visible, and the form card floats on top
-         of the lower portion of the image. -->
-    <section class="relative bg-brand">
-      <img
-        src={heroSrc}
-        alt=""
-        class="block h-auto w-full"
-        loading="eager"
-        fetchpriority="high"
-      />
+    <!-- Hero section.
+         Mobile (<md): image shows as a natural-aspect banner at the top so
+           "Always, we begin again." is fully readable. A maroon overlay
+           blends the image into the surrounding brand-colored bands.
+         Desktop (md+): image becomes a full-viewport background (object-cover,
+           anchored to the top so the text never crops) with a darker overlay
+           and the signup card floating centered in front. -->
+    <section class="relative bg-brand lg:flex lg:min-h-[88vh] lg:items-end lg:justify-center lg:px-8 lg:pb-12 lg:pt-24">
+      <!-- Narrow viewports (<lg): image shows as a banner at its natural
+           aspect so the full text fits -->
+      <div class="relative lg:hidden">
+        <img
+          src={heroSrc}
+          alt=""
+          class="block h-auto w-full"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <!-- Darken / blend into the maroon bands -->
+        <div class="pointer-events-none absolute inset-0 bg-brand/35 mix-blend-multiply"></div>
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-brand/20 via-transparent to-brand"></div>
+      </div>
 
-      <!-- Form card overlaps the bottom of the image and extends into the
-           brand-colored footer band below. -->
-      <div class="relative z-10 -mt-20 px-5 pb-12 sm:-mt-28 sm:px-8 sm:pb-16 md:-mt-36">
+      <!-- Wide viewports (lg+): full-viewport background image -->
+      <div class="pointer-events-none absolute inset-0 -z-0 hidden lg:block">
+        <img
+          src={heroSrc}
+          alt=""
+          class="h-full w-full object-cover object-top"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-black/55"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-brand/40 via-brand/20 to-brand/70"></div>
+      </div>
+
+      <!-- Form card.
+           <lg: overlaps the bottom of the banner image via negative margin.
+           lg+: sits at the bottom of the hero on top of the bg image. -->
+      <div class="relative z-10 -mt-20 px-5 pb-10 sm:-mt-28 sm:px-8 sm:pb-12 lg:mt-0 lg:w-full lg:max-w-2xl lg:px-0 lg:pb-0">
         <div class="mx-auto w-full max-w-xl rounded-2xl bg-white p-5 shadow-2xl shadow-black/40 ring-1 ring-black/10 sm:max-w-2xl sm:p-8">
           <h2 class="font-display text-[1.125rem] leading-[1.2] text-brand text-balance sm:text-[1.375rem] md:text-[1.5rem]">
             Sign up to learn more about Partnership&nbsp;Schools
@@ -117,8 +142,8 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
       </div>
     </section>
 
-    <!-- Bottom brand band -->
-    <footer class="bg-brand px-5 pb-6 pt-2 text-center font-sans text-xs text-white/80 sm:pb-8">
+    <!-- Bottom brand band (matches header padding) -->
+    <footer class="bg-brand px-5 py-8 text-center font-sans text-xs text-white/80 sm:py-10">
       &copy; {new Date().getFullYear()} Partnership Schools
     </footer>
   </main>
