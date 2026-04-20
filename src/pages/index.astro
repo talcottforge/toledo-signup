@@ -60,22 +60,20 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
       </div>
 
       <!-- Form card.
-           <lg: overlaps the bottom of the banner image via negative margin.
+           <lg: overlaps the bottom of the banner image via negative margin —
+             tuned so the children's faces stay visible above the card.
            lg+: sits in the lower portion of the hero on top of the bg image. -->
-      <div class="relative z-10 -mt-36 px-5 pb-10 sm:-mt-44 sm:px-8 sm:pb-12 lg:mt-0 lg:w-full lg:max-w-2xl lg:px-0 lg:pb-0">
-        <div class="mx-auto w-full max-w-xl rounded-2xl bg-white p-5 shadow-2xl shadow-black/40 ring-1 ring-black/10 sm:max-w-2xl sm:p-8">
+      <div class="relative z-10 -mt-16 px-5 pb-8 sm:-mt-24 sm:px-8 sm:pb-10 lg:mt-0 lg:w-full lg:max-w-2xl lg:px-0 lg:pb-0">
+        <div class="mx-auto w-full max-w-xl rounded-2xl bg-white p-5 shadow-2xl shadow-black/40 ring-1 ring-black/10 sm:max-w-2xl sm:p-7">
           <h2 class="font-display text-[1.125rem] leading-[1.2] text-brand text-balance sm:text-[1.375rem] md:text-[1.5rem]">
             Sign up to learn more about Partnership&nbsp;Schools
           </h2>
-          <p class="mt-2 font-serif text-sm text-ink-soft sm:text-base">
-            We'll send you updates on our plans for Toledo.
-          </p>
 
           <form
             id="signup-form"
             method="POST"
             action="/api/signup"
-            class="mt-5 space-y-4 sm:mt-6 sm:space-y-5"
+            class="mt-4 space-y-3.5 sm:space-y-4"
             novalidate
           >
             <!-- Honeypot -->
