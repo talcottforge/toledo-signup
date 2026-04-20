@@ -5,8 +5,9 @@ import Layout from "../layouts/Layout.astro";
 
 const FALLBACK_HERO =
   "https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_Portal_Girls.webp";
-const localHeroPath = path.resolve("public/hero.jpg");
-const heroSrc = fs.existsSync(localHeroPath) ? "/hero.jpg" : FALLBACK_HERO;
+const HERO_CANDIDATES = ["hero.jpg", "hero.jpeg", "hero.png", "hero.webp"];
+const localHero = HERO_CANDIDATES.find((f) => fs.existsSync(path.resolve("public", f)));
+const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
 ---
 
 <Layout>
