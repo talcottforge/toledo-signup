@@ -11,20 +11,18 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
 ---
 
 <Layout title="Thank you — Partnership Schools" description="Thanks for signing up to learn more about Partnership Schools.">
-  <main class="relative min-h-dvh">
-    <section class="relative isolate min-h-dvh overflow-hidden">
-      <div class="absolute inset-0 -z-10">
-        <img
-          src={heroSrc}
-          alt=""
-          class="h-full w-full object-cover object-center"
-          loading="eager"
-        />
-        <div class="absolute inset-0 bg-black/60"></div>
-        <div class="absolute inset-0 bg-gradient-to-b from-brand/50 via-brand/30 to-brand/70"></div>
-      </div>
+  <main class="relative min-h-dvh bg-brand">
+    <section class="relative w-full bg-brand">
+      <img
+        src={heroSrc}
+        alt=""
+        class="block h-auto w-full"
+        loading="eager"
+      />
+    </section>
 
-      <div class="mx-auto flex min-h-dvh w-full max-w-xl flex-col items-center justify-center px-5 py-10 sm:max-w-2xl sm:px-8">
+    <section class="relative bg-brand px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10">
+      <div class="mx-auto flex w-full max-w-xl flex-col items-center sm:max-w-2xl">
         <img
           src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_logo_white.svg"
           alt="Partnership Schools"
