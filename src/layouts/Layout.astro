@@ -10,6 +10,12 @@ const {
   title = "Partnership Schools — Coming to Toledo",
   description = "Sign up to learn more about Partnership Schools and our plans for Toledo.",
 } = Astro.props;
+
+// Build absolute URLs so iMessage / Slack / Twitter / etc. can fetch the
+// preview image. In SSR we can read the incoming request's origin.
+const origin = Astro.url.origin;
+const canonical = new URL(Astro.url.pathname, origin).toString();
+const ogImage = new URL("/hero.jpeg", origin).toString();
 ---
 
 <!doctype html>
@@ -19,6 +25,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta name="robots" content="index,follow" />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/png" href="https://thepartnershipschools.org/wp-content/uploads/2022/09/cropped-ps-favicon-32x32.png" />
     <link rel="apple-touch-icon" href="https://thepartnershipschools.org/wp-content/uploads/2022/09/cropped-ps-favicon-180x180.png" />
     <title>{title}</title>
@@ -31,9 +38,24 @@ const {
     />
 
     <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Partnership Schools" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:secure_url" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="2534" />
+    <meta property="og:image:height" content="1632" />
+    <meta property="og:image:alt" content="Partnership Schools — Always, we begin again." />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="Partnership Schools — Always, we begin again." />
   </head>
   <body class="min-h-screen bg-white text-ink">
     <slot />
