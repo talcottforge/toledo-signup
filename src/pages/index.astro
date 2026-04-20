@@ -12,9 +12,21 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
 
 <Layout>
   <main class="relative min-h-dvh bg-brand">
-    <!-- Hero image banner: full brochure spread visible on every viewport,
-         including the "Always, we begin again" headline. -->
-    <section class="relative w-full bg-brand">
+    <!-- Top brand band with the Partnership Schools logo -->
+    <header class="flex justify-center bg-brand px-5 pt-6 pb-4 sm:pt-8 sm:pb-6">
+      <img
+        src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_logo_white.svg"
+        alt="Partnership Schools"
+        class="h-10 w-auto sm:h-12"
+        width="200"
+        height="48"
+      />
+    </header>
+
+    <!-- Hero + form section: image fills width at natural aspect so "Always,
+         we begin again." is always visible, and the form card floats on top
+         of the lower portion of the image. -->
+    <section class="relative bg-brand">
       <img
         src={heroSrc}
         alt=""
@@ -22,24 +34,11 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
         loading="eager"
         fetchpriority="high"
       />
-    </section>
 
-    <!-- Signup area (sits below the hero image on brand color) -->
-    <section class="relative bg-brand px-5 pb-10 pt-8 sm:px-8 sm:pb-14 sm:pt-10">
-      <div class="mx-auto w-full max-w-xl sm:max-w-2xl">
-        <!-- Logo above the form card -->
-        <div class="flex justify-center">
-          <img
-            src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_logo_white.svg"
-            alt="Partnership Schools"
-            class="h-10 w-auto sm:h-12"
-            width="200"
-            height="48"
-          />
-        </div>
-
-        <!-- Form card -->
-        <div class="mt-6 rounded-2xl bg-white p-5 shadow-2xl shadow-black/30 ring-1 ring-black/5 sm:mt-8 sm:p-8">
+      <!-- Form card overlaps the bottom of the image and extends into the
+           brand-colored footer band below. -->
+      <div class="relative z-10 -mt-20 px-5 pb-12 sm:-mt-28 sm:px-8 sm:pb-16 md:-mt-36">
+        <div class="mx-auto w-full max-w-xl rounded-2xl bg-white p-5 shadow-2xl shadow-black/40 ring-1 ring-black/10 sm:max-w-2xl sm:p-8">
           <h2 class="font-display text-[1.125rem] leading-[1.2] text-brand text-balance sm:text-[1.375rem] md:text-[1.5rem]">
             Sign up to learn more about Partnership&nbsp;Schools
           </h2>
@@ -115,12 +114,13 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
             <p id="form-error" class="hidden font-sans text-sm text-brand" role="alert"></p>
           </form>
         </div>
-
-        <footer class="mt-8 text-center font-sans text-xs text-white/80 sm:mt-10">
-          &copy; {new Date().getFullYear()} Partnership Schools &middot; CCMT Spring Gala
-        </footer>
       </div>
     </section>
+
+    <!-- Bottom brand band -->
+    <footer class="bg-brand px-5 pb-6 pt-2 text-center font-sans text-xs text-white/80 sm:pb-8">
+      &copy; {new Date().getFullYear()} Partnership Schools
+    </footer>
   </main>
 </Layout>
 
