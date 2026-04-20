@@ -1,0 +1,112 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { requireBasicAuth } from "../../lib/auth";
+import { listSignups } from "../../lib/storage";
+
+export const prerender = false;
+
+const authFail = requireBasicAuth(Astro.request);
+if (authFail) return authFail;
+
+let signups: Awaited<ReturnType<typeof listSignups>> = [];
+let loadError: string | null = null;
+try {
+  signups = await listSignups();
+} catch (err) {
+  loadError = err instanceof Error ? err.message : String(err);
+}
+
+function fmtDate(iso: string): string {
+  try {
+    return new Date(iso).toLocaleString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  } catch {
+    return iso;
+  }
+}
+---
+
+<Layout title="Admin — Toledo Signups" description="Admin dashboard for Toledo signup list.">
+  <main class="mx-auto max-w-6xl px-6 py-10 sm:px-8">
+    <header class="flex flex-wrap items-end justify-between gap-4 border-b border-black/10 pb-6">
+      <div>
+        <p class="font-display text-xs uppercase tracking-[0.25em] text-brand">Partnership Schools</p>
+        <h1 class="mt-1 font-display text-3xl text-ink">Toledo signups</h1>
+        <p class="mt-2 font-serif text-ink-soft">
+          {signups.length} {signups.length === 1 ? "signup" : "signups"} collected.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <a
+          href="/admin/signups.csv"
+          class="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-brand-dark"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download CSV
+        </a>
+        <button
+          id="refresh-btn"
+          type="button"
+          onclick="window.location.reload()"
+          class="rounded-full border border-black/15 px-5 py-2.5 font-display text-sm font-semibold uppercase tracking-wide text-ink transition hover:border-brand hover:text-brand"
+        >
+          Refresh
+        </button>
+      </div>
+    </header>
+
+    {loadError && (
+      <div class="mt-6 rounded-lg border border-red-300 bg-red-50 p-4 font-sans text-sm text-red-800">
+        Could not load signups: {loadError}
+      </div>
+    )}
+
+    <section class="mt-8 overflow-hidden rounded-xl border border-black/10">
+      <table class="min-w-full divide-y divide-black/10">
+        <thead class="bg-brand-soft">
+          <tr>
+            <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Name</th>
+            <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Email</th>
+            <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Organization</th>
+            <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Signed up</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5 bg-white">
+          {
+            signups.length === 0 ? (
+              <tr>
+                <td colspan="4" class="px-4 py-12 text-center font-serif text-ink-soft">
+                  No signups yet.
+                </td>
+              </tr>
+            ) : (
+              signups.map((s) => (
+                <tr class="hover:bg-brand-soft/30">
+                  <td class="whitespace-nowrap px-4 py-3 font-sans text-sm text-ink">{s.name}</td>
+                  <td class="whitespace-nowrap px-4 py-3 font-sans text-sm">
+                    <a href={`mailto:${s.email}`} class="text-brand hover:underline">{s.email}</a>
+                  </td>
+                  <td class="whitespace-nowrap px-4 py-3 font-sans text-sm text-ink-soft">{s.organization || "—"}</td>
+                  <td class="whitespace-nowrap px-4 py-3 font-sans text-sm text-ink-soft">{fmtDate(s.createdAt)}</td>
+                </tr>
+              ))
+            )
+          }
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="mt-10 border-t border-black/10 pt-6 font-sans text-xs text-ink-soft">
+      Partnership Schools &middot; Toledo signup admin
+    </footer>
+  </main>
+</Layout>

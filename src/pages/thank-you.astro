@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Thank you — Partnership Schools" description="Thanks for signing up to learn more about Partnership Schools.">
+  <main class="relative min-h-screen">
+    <section class="relative overflow-hidden">
+      <div class="absolute inset-0 -z-10">
+        <img
+          src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_Portal_Girl2.webp"
+          alt=""
+          class="h-full w-full object-cover object-center"
+          loading="eager"
+        />
+        <div class="absolute inset-0 bg-gradient-to-b from-brand/90 via-brand/80 to-brand/95"></div>
+      </div>
+
+      <div class="mx-auto flex min-h-screen max-w-2xl flex-col justify-between px-6 py-10 sm:px-8 sm:py-14">
+        <header class="flex items-center">
+          <img
+            src="https://thepartnershipschools.org/wp-content/uploads/2022/07/PS_logo_white.svg"
+            alt="Partnership Schools"
+            class="h-10 w-auto sm:h-12"
+            width="200"
+            height="48"
+          />
+        </header>
+
+        <div class="my-10 sm:my-14">
+          <div class="rounded-2xl bg-white p-8 shadow-2xl shadow-black/20 ring-1 ring-black/5 sm:p-10">
+            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-brand-soft">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7 text-brand">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h1 class="mt-6 font-display text-3xl text-brand sm:text-4xl">
+              Thank you.
+            </h1>
+            <p class="mt-4 font-serif text-lg text-ink">
+              We've got your info. You'll hear from the Partnership Schools team soon with updates on what we're building in Toledo.
+            </p>
+            <p class="mt-4 font-serif text-ink-soft">
+              In the meantime, learn more about the schools we already serve:
+            </p>
+            <a
+              href="https://thepartnershipschools.org/"
+              class="mt-6 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-display text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-brand-dark"
+            >
+              Visit thepartnershipschools.org
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <footer class="mt-auto pt-6 font-sans text-xs text-white/70">
+          &copy; {new Date().getFullYear()} Partnership Schools &middot; CCMT Spring Gala
+        </footer>
+      </div>
+    </section>
+  </main>
+</Layout>

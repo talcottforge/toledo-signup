@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  /* Partnership Schools brand palette (sampled from thepartnershipschools.org) */
+  --color-brand: #6d2847;           /* primary burgundy */
+  --color-brand-dark: #4e1c33;      /* darker hover */
+  --color-brand-soft: #f5ecf0;      /* tinted background */
+  --color-accent: #aa579b;          /* magenta accent */
+  --color-accent-soft: #bf749d;     /* softer accent */
+  --color-ink: #020101;             /* near-black body text */
+  --color-ink-soft: #4a4a4a;        /* secondary text */
+  --color-cream: #faf7f4;           /* warm off-white */
+
+  /* Free substitutes closest to Patron Medium (display) + Sentinel (serif body) */
+  --font-display: "Figtree", "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-sans: "Figtree", "Inter", system-ui, -apple-system, sans-serif;
+}
+
+html {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
