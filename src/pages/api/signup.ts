@@ -5,9 +5,27 @@ export const prerender = false;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * Normalize a US phone number. Accepts any input (digits, parens, dashes,
+ * spaces, a leading "+1" or "1"). Returns the canonical "(555) 123-4567"
+ * form if there are exactly 10 digits, empty string if empty input, or
+ * null if the input doesn't look like a valid US number.
+ */
+function normalizeUsPhone(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  let digits = trimmed.replace(/\D/g, "");
+  if (digits.length === 11 && digits.startsWith("1")) digits = digits.slice(1);
+  if (digits.length !== 10) return null;
+  // Area code and exchange can't start with 0 or 1 (NANP rules)
+  if (/^[01]/.test(digits) || /^\d{3}[01]/.test(digits)) return null;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+}
+
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   let name = "";
   let email = "";
+  let phone = "";
   let organization = "";
   let honeypot = "";
 
@@ -17,12 +35,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       const body = await request.json();
       name = (body.name ?? "").toString();
       email = (body.email ?? "").toString();
+      phone = (body.phone ?? "").toString();
       organization = (body.organization ?? "").toString();
       honeypot = (body.website ?? "").toString();
     } else {
       const fd = await request.formData();
       name = (fd.get("name") ?? "").toString();
       email = (fd.get("email") ?? "").toString();
+      phone = (fd.get("phone") ?? "").toString();
       organization = (fd.get("organization") ?? "").toString();
       honeypot = (fd.get("website") ?? "").toString();
     }
@@ -41,10 +61,16 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   }
   if (organization.length > 200) return json({ error: "Organization too long." }, 400);
 
+  const normalizedPhone = normalizeUsPhone(phone);
+  if (normalizedPhone === null) {
+    return json({ error: "Please enter a valid US phone number." }, 400);
+  }
+
   try {
     await addSignup({
       name,
       email,
+      phone: normalizedPhone,
       organization,
       ip: clientAddress,
       userAgent: request.headers.get("user-agent") ?? undefined,

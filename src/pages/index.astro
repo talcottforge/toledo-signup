@@ -117,6 +117,22 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
             </div>
 
             <div>
+              <label for="phone" class="block font-display text-sm font-medium text-ink">
+                Phone <span class="font-sans text-xs font-normal text-ink-soft">(optional)</span>
+              </label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel-national"
+                maxlength="14"
+                class="mt-1.5 block w-full rounded-lg border border-black/15 bg-white px-4 py-3 font-sans text-base text-ink placeholder-black/40 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30"
+                placeholder="(555) 123-4567"
+              />
+            </div>
+
+            <div>
               <label for="organization" class="block font-display text-sm font-medium text-ink">
                 Company / organization <span class="font-sans text-xs font-normal text-ink-soft">(optional)</span>
               </label>
@@ -156,6 +172,32 @@ const heroSrc = localHero ? `/${localHero}` : FALLBACK_HERO;
   const btn = document.getElementById("submit-btn");
   const label = document.getElementById("submit-label");
   const errEl = document.getElementById("form-error");
+  const phone = document.getElementById("phone");
+
+  // US phone formatter: strips non-digits, drops a leading "1" country code,
+  // then formats as the user types → "(555) 123-4567".
+  function formatUsPhone(raw) {
+    let digits = (raw || "").replace(/\D/g, "");
+    if (digits.length > 10 && digits.startsWith("1")) digits = digits.slice(1);
+    digits = digits.slice(0, 10);
+    if (digits.length === 0) return "";
+    if (digits.length < 4) return "(" + digits;
+    if (digits.length < 7) return "(" + digits.slice(0, 3) + ") " + digits.slice(3);
+    return (
+      "(" + digits.slice(0, 3) + ") " + digits.slice(3, 6) + "-" + digits.slice(6, 10)
+    );
+  }
+
+  phone?.addEventListener("input", (e) => {
+    const target = e.target;
+    const formatted = formatUsPhone(target.value);
+    if (formatted !== target.value) {
+      target.value = formatted;
+    }
+  });
+  phone?.addEventListener("blur", (e) => {
+    e.target.value = formatUsPhone(e.target.value);
+  });
 
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();

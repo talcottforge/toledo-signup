@@ -76,6 +76,7 @@ function fmtDate(iso: string): string {
           <tr>
             <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Name</th>
             <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Email</th>
+            <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Phone</th>
             <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Organization</th>
             <th class="px-4 py-3 text-left font-display text-xs font-semibold uppercase tracking-wider text-brand">Signed up</th>
           </tr>
@@ -84,7 +85,7 @@ function fmtDate(iso: string): string {
           {
             signups.length === 0 ? (
               <tr>
-                <td colspan="4" class="px-4 py-12 text-center font-serif text-ink-soft">
+                <td colspan="5" class="px-4 py-12 text-center font-serif text-ink-soft">
                   No signups yet.
                 </td>
               </tr>
@@ -94,6 +95,13 @@ function fmtDate(iso: string): string {
                   <td class="whitespace-nowrap px-4 py-3 font-sans text-sm text-ink">{s.name}</td>
                   <td class="whitespace-nowrap px-4 py-3 font-sans text-sm">
                     <a href={`mailto:${s.email}`} class="text-brand hover:underline">{s.email}</a>
+                  </td>
+                  <td class="whitespace-nowrap px-4 py-3 font-sans text-sm">
+                    {s.phone ? (
+                      <a href={`tel:${s.phone.replace(/\D/g, "")}`} class="text-brand hover:underline">{s.phone}</a>
+                    ) : (
+                      <span class="text-ink-soft">—</span>
+                    )}
                   </td>
                   <td class="whitespace-nowrap px-4 py-3 font-sans text-sm text-ink-soft">{s.organization || "—"}</td>
                   <td class="whitespace-nowrap px-4 py-3 font-sans text-sm text-ink-soft">{fmtDate(s.createdAt)}</td>

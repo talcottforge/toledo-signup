@@ -4,6 +4,7 @@ export interface Signup {
   id: string;
   name: string;
   email: string;
+  phone: string;
   organization: string;
   createdAt: string;
   ip?: string;

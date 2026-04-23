@@ -17,10 +17,11 @@ export const GET: APIRoute = async ({ request }) => {
 
   const signups = await listSignups();
 
-  const header = ["Name", "Email", "Organization", "Signed up (UTC)", "IP", "User agent"];
+  const header = ["Name", "Email", "Phone", "Organization", "Signed up (UTC)", "IP", "User agent"];
   const rows = signups.map((s) => [
     s.name,
     s.email,
+    s.phone || "",
     s.organization,
     s.createdAt,
     s.ip || "",
